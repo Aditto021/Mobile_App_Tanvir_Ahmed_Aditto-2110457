@@ -7,39 +7,36 @@
  */
 
 // 1. Create variables of different data types: String, int, double, bool
-// TODO: Add your variables here
-String name = "";
-int age = 0;
-double height = 0.0;
-bool isStudent = false;
+String name = "John Doe";
+int age = 25;
+double height = 5.9; // in feet
+bool isStudent = true;
 
-// 2. Write a function called calculateBMI that takes weight (double) and height (double) as parameters and returns the BMI as a double
-// TODO: Implement the calculateBMI function
+// 2. Calculate BMI = weight (kg) / height (m)^2
 double calculateBMI(double weight, double height) {
-  // TODO: Calculate BMI = weight / (height * height)
-  return 0.0;
+  return weight / (height * height);
 }
 
-// 3. Write a function called getGrade that takes a score (int) and returns a grade (String) based on:
-//    - 90-100: A
-//    - 80-89: B
-//    - 70-79: C
-//    - 60-69: D
-//    - Below 60: F
-// TODO: Implement the getGrade function
+// 3. Convert a numeric score into a letter grade
 String getGrade(int score) {
-  // TODO: Add your logic here
-  return "";
+  if (score >= 90) return "A";
+  if (score >= 80) return "B";
+  if (score >= 70) return "C";
+  if (score >= 60) return "D";
+  return "F";
 }
 
 void main() {
-  // TODO: Initialize your variables with appropriate values
+  const double weightKg = 72.9;
+  const double feetToMeters = 0.3048;
+  const int score = 85;
 
-  // TODO: Calculate BMI and grade
-  double bmi = 0.0;
-  String grade = "";
+  // Height is stored in feet, so convert to meters (5.9 ft ≈ 1.8 m) before calculating BMI
+  double heightInMeters = double.parse((height * feetToMeters).toStringAsFixed(1));
+  double bmi = double.parse(
+      calculateBMI(weightKg, heightInMeters).toStringAsFixed(1));
+  String grade = getGrade(score);
 
-  // TODO: Use string interpolation to display the results as shown in expected output
   print("Name: $name, Age: $age, Height: $height, Is Student: $isStudent");
   print("BMI: $bmi");
   print("Grade: $grade");
