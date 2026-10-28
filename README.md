@@ -206,3 +206,6 @@ assignment-one-dart-YOUR_NAME-YOUR_IUB_ID/
 *Show us what you've learned!*
 
 </div>
+## Group Assignment
+
+The CSE 464 Group Assignment (Forms with Validation, Flutter) is in the [`group-assignment`](group-assignment/) folder.

@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CSE-464 Group Assignment - 2110457</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm 18mm 14mm;
+    @bottom-center { content: "Page " counter(page) " of " counter(pages); font: 9pt "Segoe UI", Arial, sans-serif; color: #000; }
+    @bottom-right { content: "Tanvir Ahmed Aditto - 2110457"; font: 9pt "Segoe UI", Arial, sans-serif; color: #000; } }
+  @page :first { @bottom-center { content: none; } @bottom-right { content: none; } }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.5pt; line-height: 1.5; color: #000; }
+  .cover { height: 258mm; display: flex; flex-direction: column; align-items: center; text-align: center; page-break-after: always; }
+  .cover .main { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 14mm; }
+  .cover .uni { font-size: 15pt; letter-spacing: 1px; font-weight: 600; }
+  .cover .school { font-size: 11pt; margin-top: 4px; }
+  .cover h1 { font-size: 26pt; margin: 36px 0 2px; letter-spacing: 1px; }
+  .cover h3 { font-size: 14pt; margin: 4px 0 6px; font-weight: 600; }
+  .cover .line { width: 60mm; border-top: 2px solid #000; margin: 6px auto 36px; }
+  .cover table { margin: 0 auto; border-collapse: collapse; font-size: 12pt; text-align: left; }
+  .cover td { padding: 7px 18px; border-bottom: 1px solid #000; }
+  .cover td:first-child { font-weight: 600; }
+  .cover .logo { width: 55mm; margin-top: 6mm; }
+  .toc { page-break-after: always; }
+  .toc table { width: 100%; border-collapse: collapse; }
+  .toc td, .toc th { border: 1px solid #000; padding: 3px 8px; font-size: 10pt; text-align: left; }
+  .tree { font-family: Consolas, monospace; font-size: 9.5pt; border: 1px solid #000; padding: 8px 12px; white-space: pre; }
+  .codefile { font-family: Consolas, monospace; font-size: 9pt; font-weight: bold; color: #fff; background: #000; padding: 3px 10px; margin-top: 14px; break-after: avoid; }
+  pre { font-family: Consolas, "Courier New", monospace; font-size: 8.3pt; line-height: 1.3; color: #000; border: 1px solid #000; border-top: none; padding: 8px 10px; margin: 0 0 8px; white-space: pre-wrap; word-break: break-word; }
+</style>
+</head>
+<body>
+<div class="cover">
+  <img class="logo" src="iub_logo.png" alt="IUB logo">
+  <div class="main">
+    <div class="uni">INDEPENDENT UNIVERSITY, BANGLADESH</div>
+    <div class="school">School of Engineering, Technology &amp; Sciences</div>
+    <h1>GROUP ASSIGNMENT</h1>
+    <h3>Forms with Validation - Source Code</h3>
+    <div class="line"></div>
+    <table>
+      <tr><td>Course Name</td><td>Mobile App Development</td></tr>
+      <tr><td>Course ID</td><td>CSE 464</td></tr>
+      <tr><td>Student Name</td><td>Tanvir Ahmed Aditto</td></tr>
+      <tr><td>Student ID</td><td>2110457</td></tr>
+      <tr><td>Group</td><td>G-10</td></tr>
+      <tr><td>Email</td><td>2110457@iub.edu.bd</td></tr>
+      <tr><td>GitHub</td><td>github.com/Aditto021</td></tr>
+    </table>
+  </div>
+</div>
+<div class="toc">
+  <h2>Contents</h2>
+  <table>
+    <tr><th style="width:8%">#</th><th>File</th><th style="width:14%">Lines</th></tr>
+<tr><td>1</td><td>lib/main.dart</td><td>103</td></tr>
+<tr><td>2</td><td>lib/screens/registration_form_page.dart</td><td>233</td></tr>
+<tr><td>3</td><td>lib/screens/form_wizard_page.dart</td><td>472</td></tr>
+<tr><td>4</td><td>lib/utils/validators.dart</td><td>144</td></tr>
+<tr><td>5</td><td>lib/utils/countries.dart</td><td>37</td></tr>
+<tr><td>6</td><td>lib/utils/date_helper.dart</td><td>18</td></tr>
+<tr><td>7</td><td>lib/utils/draft_storage.dart</td><td>18</td></tr>
+<tr><td>8</td><td>lib/widgets/simple_input_widget.dart</td><td>43</td></tr>
+<tr><td>9</td><td>lib/widgets/password_input_widget.dart</td><td>102</td></tr>
+<tr><td>10</td><td>lib/widgets/birth_date_field.dart</td><td>59</td></tr>
+<tr><td>11</td><td>lib/widgets/country_search_field.dart</td><td>59</td></tr>
+<tr><td>12</td><td>lib/widgets/gender_radio_field.dart</td><td>61</td></tr>
+<tr><td>13</td><td>lib/widgets/section_title.dart</td><td>23</td></tr>
+  </table>
+  <h3>Folder structure</h3>
+<div class="tree">lib/
+|-- main.dart
+|-- screens/
+|   |-- registration_form_page.dart   (Part 1: User Registration Form)
+|   +-- form_wizard_page.dart         (Part 2: Multi-Step Form Wizard)
+|-- utils/
+|   |-- validators.dart
+|   |-- countries.dart
+|   |-- date_helper.dart
+|   +-- draft_storage.dart
++-- widgets/
+    |-- simple_input_widget.dart
+    |-- password_input_widget.dart
+    |-- birth_date_field.dart
+    |-- country_search_field.dart
+    |-- gender_radio_field.dart
+    +-- section_title.dart</div>
+  <p>Built with Flutter and Dart only (no extra packages). Run with <code>flutter pub get</code> then <code>flutter run -d chrome</code>.</p>
+</div>
+<div class="codefile">1. lib/main.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+import &#39;screens/form_wizard_page.dart&#39;;
+import &#39;screens/registration_form_page.dart&#39;;
+
+void main() {
+  runApp(const FormApp());
+}
+
+class FormApp extends StatelessWidget {
+  const FormApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;Project 1: Forms with Validation&#39;,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.teal,
+          foregroundColor: Colors.white,
+        ),
+      ),
+      initialRoute: &#39;/&#39;,
+      routes: {
+        &#39;/&#39;: (context) =&gt; const HomePage(),
+        &#39;/register&#39;: (context) =&gt; const RegistrationFormPage(),
+        &#39;/wizard&#39;: (context) =&gt; const FormWizardPage(),
+      },
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Project 1: Forms with Validation&#39;)),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: const [
+          ProjectCard(
+            number: 1,
+            title: &#39;User Registration Form&#39;,
+            subtitle: &#39;All fields with complete validation&#39;,
+            icon: Icons.app_registration,
+            route: &#39;/register&#39;,
+          ),
+          ProjectCard(
+            number: 2,
+            title: &#39;Multi-Step Form Wizard&#39;,
+            subtitle: &#39;4 steps, progress bar and save draft&#39;,
+            icon: Icons.linear_scale,
+            route: &#39;/wizard&#39;,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProjectCard extends StatelessWidget {
+  final int number;
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final String route;
+
+  const ProjectCard({
+    super.key,
+    required this.number,
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.route,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        leading: CircleAvatar(
+          radius: 26,
+          backgroundColor: Colors.teal,
+          foregroundColor: Colors.white,
+          child: Icon(icon),
+        ),
+        title: Text(
+          &#39;Part $number: $title&#39;,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () =&gt; Navigator.pushNamed(context, route),
+      ),
+    );
+  }
+}
+</pre>
+<div class="codefile">2. lib/screens/registration_form_page.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+import &#39;../utils/validators.dart&#39;;
+import &#39;../widgets/birth_date_field.dart&#39;;
+import &#39;../widgets/country_search_field.dart&#39;;
+import &#39;../widgets/gender_radio_field.dart&#39;;
+import &#39;../widgets/password_input_widget.dart&#39;;
+import &#39;../widgets/section_title.dart&#39;;
+import &#39;../widgets/simple_input_widget.dart&#39;;
+
+// Part 1: User Registration Form
+class RegistrationFormPage extends StatefulWidget {
+  const RegistrationFormPage({super.key});
+
+  @override
+  State&lt;RegistrationFormPage&gt; createState() =&gt; _RegistrationFormPageState();
+}
+
+class _RegistrationFormPageState extends State&lt;RegistrationFormPage&gt; {
+  final formKey = GlobalKey&lt;FormState&gt;();
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final ageController = TextEditingController();
+  final nidController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final countryController = TextEditingController();
+  final birthDateController = TextEditingController();
+
+  String? gender;
+  DateTime? birthDate;
+  final List&lt;String&gt; interestOptions = [
+    &#39;Sports&#39;,
+    &#39;Music&#39;,
+    &#39;Reading&#39;,
+    &#39;Travel&#39;,
+    &#39;Gaming&#39;,
+    &#39;Coding&#39;,
+  ];
+  final List&lt;String&gt; selectedInterests = [];
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    ageController.dispose();
+    nidController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    countryController.dispose();
+    birthDateController.dispose();
+    super.dispose();
+  }
+
+  void submitForm() {
+    if (formKey.currentState!.validate()) {
+      showDialog(
+        context: context,
+        builder: (context) =&gt; AlertDialog(
+          title: const Text(&#39;Registration Successful 🎉&#39;),
+          content: Text(
+            &#39;Name: ${nameController.text}\n&#39;
+            &#39;Email: ${emailController.text}\n&#39;
+            &#39;Phone: ${phoneController.text}\n&#39;
+            &#39;Age: ${ageController.text}\n&#39;
+            &#39;NID: ${nidController.text}\n&#39;
+            &#39;Country: ${countryController.text}\n&#39;
+            &#39;Gender: $gender\n&#39;
+            &#39;Birth Date: ${birthDateController.text}\n&#39;
+            &#39;Interests: ${selectedInterests.join(&#39;, &#39;)}&#39;,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () =&gt; Navigator.pop(context),
+              child: const Text(&#39;OK&#39;),
+            ),
+          ],
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(&#39;Please fix the errors in red&#39;),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;User Registration&#39;)),
+      body: Form(
+        key: formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            const SectionTitle(&#39;Personal Information&#39;),
+            SimpleInputWidget(
+              controller: nameController,
+              labelText: &#39;Full Name&#39;,
+              hintText: &#39;e.g. Tanvir Ahmed&#39;,
+              prefixIcon: Icons.person,
+              validator: Validators.nameValidator,
+            ),
+            SimpleInputWidget(
+              controller: emailController,
+              labelText: &#39;Email&#39;,
+              hintText: &#39;e.g. name@gmail.com&#39;,
+              prefixIcon: Icons.email,
+              keyboardType: TextInputType.emailAddress,
+              validator: Validators.emailValidation,
+            ),
+            SimpleInputWidget(
+              controller: phoneController,
+              labelText: &#39;Phone Number&#39;,
+              hintText: &#39;e.g. 01712345678&#39;,
+              prefixIcon: Icons.phone,
+              keyboardType: TextInputType.phone,
+              validator: Validators.bangladeshNumberValidator,
+            ),
+            SimpleInputWidget(
+              controller: ageController,
+              labelText: &#39;Age&#39;,
+              hintText: &#39;e.g. 22&#39;,
+              prefixIcon: Icons.numbers,
+              keyboardType: TextInputType.number,
+              validator: Validators.ageValidator,
+            ),
+            SimpleInputWidget(
+              controller: nidController,
+              labelText: &#39;NID Number&#39;,
+              hintText: &#39;10, 13 or 17 digits&#39;,
+              prefixIcon: Icons.badge,
+              keyboardType: TextInputType.number,
+              validator: Validators.nidValidator,
+            ),
+            BirthDateField(
+              controller: birthDateController,
+              selectedDate: birthDate,
+              onDatePicked: (date) =&gt; setState(() =&gt; birthDate = date),
+            ),
+            GenderRadioField(
+              value: gender,
+              onChanged: (value) =&gt; setState(() =&gt; gender = value),
+            ),
+            CountrySearchField(controller: countryController),
+            const SectionTitle(&#39;Interests&#39;),
+            buildInterests(),
+            const SectionTitle(&#39;Password&#39;),
+            PasswordField(
+              controller: passwordController,
+              showStrength: true,
+              validator: Validators.passwordValidator,
+            ),
+            PasswordField(
+              controller: confirmPasswordController,
+              labelText: &#39;Confirm Password&#39;,
+              validator: (value) =&gt; Validators.confirmPasswordValidator(
+                passwordController.text,
+                value,
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 50,
+              child: ElevatedButton.icon(
+                onPressed: submitForm,
+                icon: const Icon(Icons.check),
+                label: const Text(&#39;Register&#39;, style: TextStyle(fontSize: 16)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Interest checkboxes; at least one must be ticked.
+  Widget buildInterests() {
+    return FormField&lt;List&lt;String&gt;&gt;(
+      validator: (_) =&gt; selectedInterests.isEmpty
+          ? &#39;Please pick at least one interest&#39;
+          : null,
+      builder: (field) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                children: interestOptions.map((interest) {
+                  return SizedBox(
+                    width: 160,
+                    child: CheckboxListTile(
+                      title: Text(interest),
+                      value: selectedInterests.contains(interest),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      onChanged: (checked) {
+                        setState(() {
+                          if (checked == true) {
+                            selectedInterests.add(interest);
+                          } else {
+                            selectedInterests.remove(interest);
+                          }
+                        });
+                        field.didChange(selectedInterests);
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+              if (field.hasError)
+                Text(
+                  field.errorText!,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 12,
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+</pre>
+<div class="codefile">3. lib/screens/form_wizard_page.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+import &#39;../utils/date_helper.dart&#39;;
+import &#39;../utils/draft_storage.dart&#39;;
+import &#39;../utils/validators.dart&#39;;
+import &#39;../widgets/birth_date_field.dart&#39;;
+import &#39;../widgets/country_search_field.dart&#39;;
+import &#39;../widgets/gender_radio_field.dart&#39;;
+import &#39;../widgets/section_title.dart&#39;;
+import &#39;../widgets/simple_input_widget.dart&#39;;
+
+// Part 2: Multi-Step Form Wizard
+class FormWizardPage extends StatefulWidget {
+  const FormWizardPage({super.key});
+
+  @override
+  State&lt;FormWizardPage&gt; createState() =&gt; _FormWizardPageState();
+}
+
+class _FormWizardPageState extends State&lt;FormWizardPage&gt; {
+  final List&lt;String&gt; stepTitles = [
+    &#39;Personal&#39;,
+    &#39;Contact&#39;,
+    &#39;Preferences&#39;,
+    &#39;Review&#39;,
+  ];
+  int currentStep = 0;
+
+  // One form key for each step that has inputs (steps 1-3).
+  final List&lt;GlobalKey&lt;FormState&gt;&gt; formKeys = [
+    GlobalKey&lt;FormState&gt;(),
+    GlobalKey&lt;FormState&gt;(),
+    GlobalKey&lt;FormState&gt;(),
+  ];
+
+  // Step 1: Personal Information
+  final nameController = TextEditingController();
+  final birthDateController = TextEditingController();
+  DateTime? birthDate;
+  String? gender;
+
+  // Step 2: Contact Details
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final addressController = TextEditingController();
+
+  // Step 3: Preferences &amp; Settings
+  final countryController = TextEditingController();
+  final List&lt;String&gt; languages = [&#39;English&#39;, &#39;Bangla&#39;, &#39;Hindi&#39;, &#39;Arabic&#39;];
+  String? language;
+  bool notifications = true;
+  bool newsletter = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (DraftStorage.hasDraft) {
+      loadDraft();
+      // Show the message after the first frame is drawn.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showMessage(&#39;Draft restored — continue where you left off&#39;);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    birthDateController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    addressController.dispose();
+    countryController.dispose();
+    super.dispose();
+  }
+
+  // ---------- Draft ----------
+
+  void saveDraft() {
+    DraftStorage.save({
+      &#39;step&#39;: currentStep,
+      &#39;name&#39;: nameController.text,
+      &#39;birthDate&#39;: birthDate,
+      &#39;gender&#39;: gender,
+      &#39;email&#39;: emailController.text,
+      &#39;phone&#39;: phoneController.text,
+      &#39;address&#39;: addressController.text,
+      &#39;country&#39;: countryController.text,
+      &#39;language&#39;: language,
+      &#39;notifications&#39;: notifications,
+      &#39;newsletter&#39;: newsletter,
+    });
+    showMessage(&#39;Draft saved ✔&#39;);
+  }
+
+  void loadDraft() {
+    final draft = DraftStorage.load()!;
+    currentStep = draft[&#39;step&#39;];
+    nameController.text = draft[&#39;name&#39;];
+    birthDate = draft[&#39;birthDate&#39;];
+    if (birthDate != null) {
+      birthDateController.text = formatDate(birthDate!);
+    }
+    gender = draft[&#39;gender&#39;];
+    emailController.text = draft[&#39;email&#39;];
+    phoneController.text = draft[&#39;phone&#39;];
+    addressController.text = draft[&#39;address&#39;];
+    countryController.text = draft[&#39;country&#39;];
+    language = draft[&#39;language&#39;];
+    notifications = draft[&#39;notifications&#39;];
+    newsletter = draft[&#39;newsletter&#39;];
+  }
+
+  void showMessage(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(text), duration: const Duration(seconds: 2)),
+    );
+  }
+
+  // ---------- Navigation ----------
+
+  void goNext() {
+    // Only move forward when the current step is valid.
+    if (formKeys[currentStep].currentState!.validate()) {
+      setState(() =&gt; currentStep++);
+    } else {
+      showMessage(&#39;Please fix the errors before continuing&#39;);
+    }
+  }
+
+  void goBack() {
+    setState(() =&gt; currentStep--);
+  }
+
+  void submit() {
+    DraftStorage.clear();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) =&gt; AlertDialog(
+        title: const Text(&#39;Submitted Successfully 🎉&#39;),
+        content: Text(&#39;Thank you, ${nameController.text}!&#39;),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // close the dialog
+              Navigator.pop(this.context); // back to the home page
+            },
+            child: const Text(&#39;Done&#39;),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------- UI ----------
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(&#39;Multi-Step Form&#39;),
+        actions: [
+          TextButton.icon(
+            onPressed: saveDraft,
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
+            icon: const Icon(Icons.save),
+            label: const Text(&#39;Save Draft&#39;),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          buildProgressIndicator(),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: buildCurrentStep(),
+            ),
+          ),
+          buildNavigationButtons(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildProgressIndicator() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+      child: Column(
+        children: [
+          Row(
+            children: List.generate(stepTitles.length, (index) {
+              final bool isDone = index &lt; currentStep;
+              final bool isActive = index == currentStep;
+              final Color color = isDone || isActive
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.grey.shade400;
+              return Expanded(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundColor: color,
+                      foregroundColor: Colors.white,
+                      child: isDone
+                          ? const Icon(Icons.check, size: 18)
+                          : Text(&#39;${index + 1}&#39;),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      stepTitles[index],
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: color,
+                        fontWeight: isActive
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+          const SizedBox(height: 12),
+          LinearProgressIndicator(
+            value: (currentStep + 1) / stepTitles.length,
+            minHeight: 6,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          const SizedBox(height: 4),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              &#39;Step ${currentStep + 1} of ${stepTitles.length}&#39;,
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCurrentStep() {
+    switch (currentStep) {
+      case 0:
+        return buildPersonalStep();
+      case 1:
+        return buildContactStep();
+      case 2:
+        return buildPreferencesStep();
+      default:
+        return buildReviewStep();
+    }
+  }
+
+  Widget buildPersonalStep() {
+    return Form(
+      key: formKeys[0],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(&#39;Step 1: Personal Information&#39;),
+          SimpleInputWidget(
+            controller: nameController,
+            labelText: &#39;Full Name&#39;,
+            hintText: &#39;e.g. Tanvir Ahmed&#39;,
+            prefixIcon: Icons.person,
+            validator: Validators.nameValidator,
+          ),
+          BirthDateField(
+            controller: birthDateController,
+            selectedDate: birthDate,
+            onDatePicked: (date) =&gt; setState(() =&gt; birthDate = date),
+          ),
+          GenderRadioField(
+            value: gender,
+            onChanged: (value) =&gt; setState(() =&gt; gender = value),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildContactStep() {
+    return Form(
+      key: formKeys[1],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(&#39;Step 2: Contact Details&#39;),
+          SimpleInputWidget(
+            controller: emailController,
+            labelText: &#39;Email&#39;,
+            hintText: &#39;e.g. name@gmail.com&#39;,
+            prefixIcon: Icons.email,
+            keyboardType: TextInputType.emailAddress,
+            validator: Validators.emailValidation,
+          ),
+          SimpleInputWidget(
+            controller: phoneController,
+            labelText: &#39;Phone Number&#39;,
+            hintText: &#39;e.g. 01712345678&#39;,
+            prefixIcon: Icons.phone,
+            keyboardType: TextInputType.phone,
+            validator: Validators.bangladeshNumberValidator,
+          ),
+          SimpleInputWidget(
+            controller: addressController,
+            labelText: &#39;Address&#39;,
+            hintText: &#39;House, road, area, city&#39;,
+            prefixIcon: Icons.home,
+            maxLines: 2,
+            validator: (value) =&gt;
+                Validators.minLengthValidator(value, 5, &#39;Address&#39;),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildPreferencesStep() {
+    return Form(
+      key: formKeys[2],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(&#39;Step 3: Preferences &amp; Settings&#39;),
+          CountrySearchField(controller: countryController),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: DropdownButtonFormField&lt;String&gt;(
+              initialValue: language,
+              decoration: InputDecoration(
+                labelText: &#39;Preferred Language&#39;,
+                prefixIcon: const Icon(Icons.language),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              items: languages
+                  .map(
+                    (lang) =&gt; DropdownMenuItem(value: lang, child: Text(lang)),
+                  )
+                  .toList(),
+              onChanged: (value) =&gt; setState(() =&gt; language = value),
+              validator: (value) =&gt;
+                  Validators.requiredValidator(value, &#39;Language&#39;),
+            ),
+          ),
+          SwitchListTile(
+            title: const Text(&#39;Push notifications&#39;),
+            subtitle: const Text(&#39;Get updates about your account&#39;),
+            value: notifications,
+            onChanged: (value) =&gt; setState(() =&gt; notifications = value),
+          ),
+          SwitchListTile(
+            title: const Text(&#39;Email newsletter&#39;),
+            subtitle: const Text(&#39;Receive our monthly newsletter&#39;),
+            value: newsletter,
+            onChanged: (value) =&gt; setState(() =&gt; newsletter = value),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildReviewStep() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SectionTitle(&#39;Step 4: Review &amp; Submit&#39;),
+        reviewCard(&#39;Personal Information&#39;, 0, {
+          &#39;Name&#39;: nameController.text,
+          &#39;Birth Date&#39;: birthDateController.text,
+          &#39;Gender&#39;: gender ?? &#39;&#39;,
+        }),
+        reviewCard(&#39;Contact Details&#39;, 1, {
+          &#39;Email&#39;: emailController.text,
+          &#39;Phone&#39;: phoneController.text,
+          &#39;Address&#39;: addressController.text,
+        }),
+        reviewCard(&#39;Preferences &amp; Settings&#39;, 2, {
+          &#39;Country&#39;: countryController.text,
+          &#39;Language&#39;: language ?? &#39;&#39;,
+          &#39;Notifications&#39;: notifications ? &#39;On&#39; : &#39;Off&#39;,
+          &#39;Newsletter&#39;: newsletter ? &#39;On&#39; : &#39;Off&#39;,
+        }),
+      ],
+    );
+  }
+
+  // A card listing one step&#39;s answers, with an Edit button to jump back.
+  Widget reviewCard(String title, int step, Map&lt;String, String&gt; values) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () =&gt; setState(() =&gt; currentStep = step),
+                  child: const Text(&#39;Edit&#39;),
+                ),
+              ],
+            ),
+            ...values.entries.map(
+              (entry) =&gt; Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      child: Text(
+                        &#39;${entry.key}:&#39;,
+                        style: const TextStyle(color: Colors.black54),
+                      ),
+                    ),
+                    Expanded(child: Text(entry.value)),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildNavigationButtons() {
+    final bool isFirst = currentStep == 0;
+    final bool isLast = currentStep == stepTitles.length - 1;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6)],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: OutlinedButton.icon(
+              onPressed: isFirst ? null : goBack,
+              icon: const Icon(Icons.arrow_back),
+              label: const Text(&#39;Back&#39;),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: ElevatedButton.icon(
+              onPressed: isLast ? submit : goNext,
+              icon: Icon(isLast ? Icons.send : Icons.arrow_forward),
+              label: Text(isLast ? &#39;Submit&#39; : &#39;Next&#39;),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+</pre>
+<div class="codefile">4. lib/utils/validators.dart</div>
+<pre>// All form validation rules in one place.
+// Each method returns an error message, or null when the value is valid.
+class Validators {
+  static String? nameValidator(String? name) {
+    if (name == null || name.trim().isEmpty) {
+      return &#39;Name is required&#39;;
+    }
+    if (name.trim().length &lt; 2) {
+      return &#39;Name must be at least 2 characters long&#39;;
+    }
+    if (!RegExp(r&#39;^[a-zA-Z\s.]+$&#39;).hasMatch(name.trim())) {
+      return &#39;Name can only contain letters and spaces&#39;;
+    }
+    return null;
+  }
+
+  static String? emailValidation(String? email) {
+    if (email == null || email.trim().isEmpty) {
+      return &#39;Email is required&#39;;
+    }
+    final emailRegex = RegExp(r&#39;^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$&#39;);
+    if (!emailRegex.hasMatch(email.trim())) {
+      return &#39;Please enter a valid email address&#39;;
+    }
+    return null;
+  }
+
+  // Accepts 01XXXXXXXXX, +8801XXXXXXXXX or 8801XXXXXXXXX
+  static String? bangladeshNumberValidator(String? phone) {
+    if (phone == null || phone.trim().isEmpty) {
+      return &#39;Phone number is required&#39;;
+    }
+    String cleanPhone = phone.replaceAll(RegExp(r&#39;[^\d]&#39;), &#39;&#39;);
+    if (cleanPhone.startsWith(&#39;880&#39;)) {
+      cleanPhone = cleanPhone.substring(2); // keep the leading 0
+    }
+    if (cleanPhone.length != 11) {
+      return &#39;Phone number must be 11 digits (e.g. 01712345678)&#39;;
+    }
+    const validPrefixes = [&#39;013&#39;, &#39;014&#39;, &#39;015&#39;, &#39;016&#39;, &#39;017&#39;, &#39;018&#39;, &#39;019&#39;];
+    if (!validPrefixes.contains(cleanPhone.substring(0, 3))) {
+      return &#39;Please enter a valid Bangladesh mobile number&#39;;
+    }
+    return null;
+  }
+
+  static String? ageValidator(String? age) {
+    if (age == null || age.trim().isEmpty) {
+      return &#39;Age is required&#39;;
+    }
+    final int? ageValue = int.tryParse(age.trim());
+    if (ageValue == null) {
+      return &#39;Please enter a valid age&#39;;
+    }
+    if (ageValue &lt; 13) {
+      return &#39;You must be at least 13 years old&#39;;
+    }
+    if (ageValue &gt; 120) {
+      return &#39;Please enter a valid age&#39;;
+    }
+    return null;
+  }
+
+  // Bangladesh NID is 10, 13 or 17 digits
+  static String? nidValidator(String? nid) {
+    if (nid == null || nid.trim().isEmpty) {
+      return &#39;NID is required&#39;;
+    }
+    final String cleanNid = nid.replaceAll(RegExp(r&#39;[^\d]&#39;), &#39;&#39;);
+    if (cleanNid.length != 10 &amp;&amp;
+        cleanNid.length != 13 &amp;&amp;
+        cleanNid.length != 17) {
+      return &#39;NID must be 10, 13 or 17 digits&#39;;
+    }
+    return null;
+  }
+
+  static String? passwordValidator(String? password) {
+    if (password == null || password.isEmpty) {
+      return &#39;Password is required&#39;;
+    }
+    if (password.length &lt; 8) {
+      return &#39;Password must be at least 8 characters long&#39;;
+    }
+    if (!password.contains(RegExp(r&#39;[A-Z]&#39;))) {
+      return &#39;Password must contain at least one uppercase letter&#39;;
+    }
+    if (!password.contains(RegExp(r&#39;[a-z]&#39;))) {
+      return &#39;Password must contain at least one lowercase letter&#39;;
+    }
+    if (!password.contains(RegExp(r&#39;[0-9]&#39;))) {
+      return &#39;Password must contain at least one number&#39;;
+    }
+    if (!password.contains(RegExp(r&#39;[!@#$%^&amp;*(),.?&quot;:{}|&lt;&gt;_\-]&#39;))) {
+      return &#39;Password must contain at least one special character&#39;;
+    }
+    return null;
+  }
+
+  static String? confirmPasswordValidator(
+    String? password,
+    String? confirmPassword,
+  ) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return &#39;Please confirm your password&#39;;
+    }
+    if (password != confirmPassword) {
+      return &#39;Passwords do not match&#39;;
+    }
+    return null;
+  }
+
+  static String? requiredValidator(String? value, String fieldName) {
+    if (value == null || value.trim().isEmpty) {
+      return &#39;$fieldName is required&#39;;
+    }
+    return null;
+  }
+
+  static String? minLengthValidator(
+    String? value,
+    int minLength,
+    String fieldName,
+  ) {
+    if (value == null || value.trim().isEmpty) {
+      return &#39;$fieldName is required&#39;;
+    }
+    if (value.trim().length &lt; minLength) {
+      return &#39;$fieldName must be at least $minLength characters long&#39;;
+    }
+    return null;
+  }
+
+  // Password strength from 0 (empty) to 5 (meets every rule)
+  static int passwordStrength(String password) {
+    int score = 0;
+    if (password.length &gt;= 8) score++;
+    if (password.contains(RegExp(r&#39;[A-Z]&#39;))) score++;
+    if (password.contains(RegExp(r&#39;[a-z]&#39;))) score++;
+    if (password.contains(RegExp(r&#39;[0-9]&#39;))) score++;
+    if (password.contains(RegExp(r&#39;[!@#$%^&amp;*(),.?&quot;:{}|&lt;&gt;_\-]&#39;))) score++;
+    return score;
+  }
+}
+</pre>
+<div class="codefile">5. lib/utils/countries.dart</div>
+<pre>// Country list for the searchable country field.
+const List&lt;String&gt; countries = [
+  &#39;Afghanistan&#39;,
+  &#39;Australia&#39;,
+  &#39;Bangladesh&#39;,
+  &#39;Bhutan&#39;,
+  &#39;Brazil&#39;,
+  &#39;Canada&#39;,
+  &#39;China&#39;,
+  &#39;Egypt&#39;,
+  &#39;France&#39;,
+  &#39;Germany&#39;,
+  &#39;India&#39;,
+  &#39;Indonesia&#39;,
+  &#39;Italy&#39;,
+  &#39;Japan&#39;,
+  &#39;Malaysia&#39;,
+  &#39;Maldives&#39;,
+  &#39;Nepal&#39;,
+  &#39;Netherlands&#39;,
+  &#39;New Zealand&#39;,
+  &#39;Pakistan&#39;,
+  &#39;Qatar&#39;,
+  &#39;Russia&#39;,
+  &#39;Saudi Arabia&#39;,
+  &#39;Singapore&#39;,
+  &#39;South Africa&#39;,
+  &#39;South Korea&#39;,
+  &#39;Spain&#39;,
+  &#39;Sri Lanka&#39;,
+  &#39;Sweden&#39;,
+  &#39;Thailand&#39;,
+  &#39;Turkey&#39;,
+  &#39;United Arab Emirates&#39;,
+  &#39;United Kingdom&#39;,
+  &#39;United States&#39;,
+];
+</pre>
+<div class="codefile">6. lib/utils/date_helper.dart</div>
+<pre>// Small helpers for showing and checking dates without extra packages.
+String formatDate(DateTime date) {
+  final String day = date.day.toString().padLeft(2, &#39;0&#39;);
+  final String month = date.month.toString().padLeft(2, &#39;0&#39;);
+  return &#39;$day/$month/${date.year}&#39;;
+}
+
+int ageFromBirthDate(DateTime birthDate) {
+  final DateTime today = DateTime.now();
+  int age = today.year - birthDate.year;
+  final bool birthdayNotYet =
+      today.month &lt; birthDate.month ||
+      (today.month == birthDate.month &amp;&amp; today.day &lt; birthDate.day);
+  if (birthdayNotYet) {
+    age--;
+  }
+  return age;
+}
+</pre>
+<div class="codefile">7. lib/utils/draft_storage.dart</div>
+<pre>// Keeps the saved wizard draft in memory while the app is running.
+// Leaving the wizard and coming back restores it.
+// (Only Flutter and Dart are used, so the draft is cleared when the app closes.)
+class DraftStorage {
+  static Map&lt;String, dynamic&gt;? _draft;
+
+  static bool get hasDraft =&gt; _draft != null;
+
+  static void save(Map&lt;String, dynamic&gt; data) {
+    _draft = Map&lt;String, dynamic&gt;.from(data);
+  }
+
+  static Map&lt;String, dynamic&gt;? load() =&gt; _draft;
+
+  static void clear() {
+    _draft = null;
+  }
+}
+</pre>
+<div class="codefile">8. lib/widgets/simple_input_widget.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+// A reusable text field with a label, hint, icon and validator.
+class SimpleInputWidget extends StatelessWidget {
+  final TextEditingController controller;
+  final String labelText;
+  final String hintText;
+  final IconData prefixIcon;
+  final int maxLines;
+  final TextInputType keyboardType;
+  final String? Function(String?)? validator;
+
+  const SimpleInputWidget({
+    super.key,
+    required this.controller,
+    required this.labelText,
+    required this.hintText,
+    required this.prefixIcon,
+    this.validator,
+    this.maxLines = 1,
+    this.keyboardType = TextInputType.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: InputDecoration(
+          labelText: labelText,
+          hintText: hintText,
+          prefixIcon: Icon(prefixIcon),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        validator: validator,
+      ),
+    );
+  }
+}
+</pre>
+<div class="codefile">9. lib/widgets/password_input_widget.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+import &#39;../utils/validators.dart&#39;;
+
+// Password field with a show/hide button and an optional strength bar.
+class PasswordField extends StatefulWidget {
+  final TextEditingController controller;
+  final String labelText;
+  final bool showStrength;
+  final String? Function(String?)? validator;
+
+  const PasswordField({
+    super.key,
+    required this.controller,
+    this.labelText = &#39;Password&#39;,
+    this.showStrength = false,
+    this.validator,
+  });
+
+  @override
+  State&lt;PasswordField&gt; createState() =&gt; _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State&lt;PasswordField&gt; {
+  bool _obscureText = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            controller: widget.controller,
+            obscureText: _obscureText,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: (_) =&gt; setState(() {}), // redraw the strength bar
+            decoration: InputDecoration(
+              labelText: widget.labelText,
+              prefixIcon: const Icon(Icons.lock),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            validator: widget.validator,
+          ),
+          if (widget.showStrength) _buildStrengthBar(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStrengthBar() {
+    final int score = Validators.passwordStrength(widget.controller.text);
+
+    String label = &#39;Too weak&#39;;
+    Color color = Colors.red;
+    if (widget.controller.text.isEmpty) {
+      label = &#39;-&#39;;
+      color = Colors.grey;
+    } else if (score &gt;= 5) {
+      label = &#39;Strong&#39;;
+      color = Colors.green;
+    } else if (score &gt;= 3) {
+      label = &#39;Medium&#39;;
+      color = Colors.orange;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: LinearProgressIndicator(
+              value: score / 5,
+              minHeight: 6,
+              color: color,
+              backgroundColor: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            &#39;Strength: $label&#39;,
+            style: TextStyle(color: color, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+}
+</pre>
+<div class="codefile">10. lib/widgets/birth_date_field.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+import &#39;../utils/date_helper.dart&#39;;
+
+// Read-only field that opens a date picker when tapped.
+class BirthDateField extends StatelessWidget {
+  final TextEditingController controller;
+  final DateTime? selectedDate;
+  final ValueChanged&lt;DateTime&gt; onDatePicked;
+
+  const BirthDateField({
+    super.key,
+    required this.controller,
+    required this.selectedDate,
+    required this.onDatePicked,
+  });
+
+  Future&lt;void&gt; _pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime(2000, 1, 1),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      helpText: &#39;Select your birth date&#39;,
+    );
+    if (picked != null) {
+      controller.text = formatDate(picked);
+      onDatePicked(picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: TextFormField(
+        controller: controller,
+        readOnly: true,
+        onTap: () =&gt; _pickDate(context),
+        decoration: InputDecoration(
+          labelText: &#39;Birth Date&#39;,
+          hintText: &#39;Tap to pick a date&#39;,
+          prefixIcon: const Icon(Icons.cake),
+          suffixIcon: const Icon(Icons.calendar_month),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        validator: (_) {
+          if (selectedDate == null) {
+            return &#39;Birth date is required&#39;;
+          }
+          if (ageFromBirthDate(selectedDate!) &lt; 13) {
+            return &#39;You must be at least 13 years old&#39;;
+          }
+          return null;
+        },
+      ),
+    );
+  }
+}
+</pre>
+<div class="codefile">11. lib/widgets/country_search_field.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+import &#39;../utils/countries.dart&#39;;
+
+// A country field with search: type a few letters and pick from the list.
+// Uses Flutter&#39;s built-in Autocomplete widget (no extra packages).
+class CountrySearchField extends StatelessWidget {
+  final TextEditingController controller;
+
+  const CountrySearchField({super.key, required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Autocomplete&lt;String&gt;(
+        initialValue: TextEditingValue(text: controller.text),
+        optionsBuilder: (TextEditingValue value) {
+          if (value.text.isEmpty) {
+            return countries;
+          }
+          return countries.where(
+            (country) =&gt;
+                country.toLowerCase().contains(value.text.toLowerCase()),
+          );
+        },
+        onSelected: (String country) {
+          controller.text = country;
+        },
+        fieldViewBuilder: (context, fieldController, focusNode, onSubmit) {
+          return TextFormField(
+            controller: fieldController,
+            focusNode: focusNode,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: (value) =&gt; controller.text = value,
+            decoration: InputDecoration(
+              labelText: &#39;Country&#39;,
+              hintText: &#39;Type to search...&#39;,
+              prefixIcon: const Icon(Icons.public),
+              suffixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return &#39;Country is required&#39;;
+              }
+              if (!countries.contains(value)) {
+                return &#39;Please pick a country from the list&#39;;
+              }
+              return null;
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+</pre>
+<div class="codefile">12. lib/widgets/gender_radio_field.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+const List&lt;String&gt; genders = [&#39;Male&#39;, &#39;Female&#39;, &#39;Other&#39;];
+
+// Gender radio buttons that show an error message when nothing is chosen.
+class GenderRadioField extends StatelessWidget {
+  final String? value;
+  final ValueChanged&lt;String?&gt; onChanged;
+
+  const GenderRadioField({
+    super.key,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FormField&lt;String&gt;(
+      initialValue: value,
+      validator: (_) =&gt; value == null ? &#39;Please select your gender&#39; : null,
+      builder: (field) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(&#39;Gender&#39;, style: TextStyle(fontSize: 16)),
+              RadioGroup&lt;String&gt;(
+                groupValue: value,
+                onChanged: (newValue) {
+                  onChanged(newValue);
+                  field.didChange(newValue);
+                },
+                child: Row(
+                  children: genders.map((gender) {
+                    return Expanded(
+                      child: RadioListTile&lt;String&gt;(
+                        value: gender,
+                        title: Text(gender),
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              if (field.hasError)
+                Text(
+                  field.errorText!,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 12,
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+</pre>
+<div class="codefile">13. lib/widgets/section_title.dart</div>
+<pre>import &#39;package:flutter/material.dart&#39;;
+
+// A bold heading used to split a form into sections.
+class SectionTitle extends StatelessWidget {
+  final String title;
+
+  const SectionTitle(this.title, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 12),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+    );
+  }
+}
+</pre>
+</body>
+</html>
